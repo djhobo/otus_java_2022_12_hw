@@ -1,16 +1,20 @@
 package homework;
 
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class CustomerReverseOrder {
 
-    //todo: 2. РЅР°РґРѕ СЂРµР°Р»РёР·РѕРІР°С‚СЊ РјРµС‚РѕРґС‹ СЌС‚РѕРіРѕ РєР»Р°СЃСЃР°
-    //РЅР°РґРѕ РїРѕРґРѕР±СЂР°С‚СЊ РїРѕРґС…РѕРґСЏС‰СѓСЋ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґР°РЅРЅС‹С…, С‚РѕРіРґР° СЂРµС€РµРЅРёРµ Р±СѓРґРµС‚ РІ "РґРІРµ СЃС‚СЂРѕС‡РєРё"
+    //todo: 2. надо реализовать методы этого класса
+    //надо подобрать подходящую структуру данных, тогда решение будет в "две строчки"
+
+    private final Deque<Customer> deque = new LinkedList<>();
 
     public void add(Customer customer) {
-
+        deque.add(customer);
     }
 
     public Customer take() {
-        return null; // СЌС‚Рѕ "Р·Р°РіР»СѓС€РєР°, С‡С‚РѕР±С‹ СЃРєРѕРјРёР»РёСЂРѕРІР°С‚СЊ"
+        return deque.pollLast();
     }
 }
