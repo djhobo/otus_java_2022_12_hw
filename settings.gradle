@@ -1,1 +1,3 @@
 rootProject.name = 'otus_java_2022_12_hw'
+
+include 'hw10-jpql'
