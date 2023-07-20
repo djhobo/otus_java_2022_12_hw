@@ -1,58 +1,47 @@
 package ru.otus.model;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@Entity
 @Table(name = "client")
-public class Client implements Cloneable {
-
+public class Client{
     @Id
-    @SequenceGenerator(name = "client_gen", sequenceName = "client_seq",
-            initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_gen")
-    @Column(name = "id")
-    private Long id;
+    @Column("id")
+    private final Long id;
 
-    @Column(name = "name")
-    private String name;
+    private final String name;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private Address address;
+    @MappedCollection(idColumn = "client_id")
+    private final Address address;
 
-    @OneToMany(mappedBy = "client_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Phone> phones = new ArrayList<>();
+    @MappedCollection(idColumn = "client_id", keyColumn = "sort_id")
+    private final List<Phone> numbers;
 
-    public Client(String name) {
+    public Client(String name, Address address, List<Phone> numbers) {
         this.id = null;
         this.name = name;
-    }
-
-    public Client(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Client(Long id, String name, Address address, List<Phone> phones) {
-        this.id = id;
-        this.name = name;
         this.address = address;
-        Collections.copy(phones, this.phones);
+        this.numbers = numbers;
     }
 
-    @Override
-    public Client clone() {
-        return new Client(this.id, this.name, this.address, this.phones);
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public List<Phone> getNumbers() {
+        return numbers;
     }
 
     @Override
@@ -61,7 +50,7 @@ public class Client implements Cloneable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", address=" + address +
-                ", phones=" + phones +
+                ", numbers=" + numbers +
                 '}';
     }
 }

@@ -1,38 +1,70 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
 <head>
     <title>Клиенты</title>
+    <meta charset="UTF-8"/>
+    <title>Create client</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+
 </head>
 
 <body>
 <h4>Создать нового клиента</h4>
-<form action="clients" method="post">
-    <input type="text" name = "clientName" placeholder="Введите имя клиента">
-    <input type="text" name = "clientAddress" placeholder="Введите адрес клиента">
-    <input type="text" name = "clientPhone" placeholder="Введите номер телефона клиента">
-    <input type="submit" value="Сохранить"/>
+<form id="create-form" th:action="@{/client/save}" th:object="${client}" th:method="post" accept-charset="utf-8">
+    <div class="row">
+        <label for="clientName">Name:</label>
+        <input id="clientName" type="text" name = "name" th:value="*{name}" placeholder="Введите имя клиента"/>
+        <label for="clientAddress">Address:</label>
+        <input id="clientAddress" type="text" name = "address" th:value="*{address.street}" placeholder="Введите адрес клиента"/>
+        <label for="firstPhone">First phone:</label>
+        <input id="firstPhone" type="text" name = "firstNumber" th:value="${phones.firstNumber}" placeholder="Введите основной номер телефона клиента"/>
+        <label for="secondPhone">Second phone:</label>
+        <input id="secondPhone" type="text" name = "secondNumber" th:value="${phones.secondNumber}" placeholder="Введите запасной номер телефона клиента"/>
+    </div>
+    <div class="row">
+        <button type="submit">Save with form</button>
+    </div>
 </form>
+<br>
 
-<h4>Все клиенты</h4>
-<table style="width: 400px">
+<h3>Клиенты:</h3>
+<table class="clients">
     <thead>
     <tr>
-        <td style="width: 50px">Id</td>
-        <td style="width: 150px">Имя</td>
-        <td style="width: 150px">Адрес</td>
-        <td style="width: 150px">Телефон</td>
+        <th style="width: 150px">ID</th>
+        <th style="width: 150px">Name</th>
+        <th style="width: 150px">Address</th>
+        <th style="width: 150px">First phone</th>
+        <th style="width: 150px">Second phone</th>
     </tr>
     </thead>
     <tbody>
-    <#list allClients as client>
-    <tr>
-        <td>${client.id}</td>
-        <td>${client.name}</td>
-        <td>${client.address}</td>
-        <#list client.phones as p>
-            <td>${p.phoneNumber}</td>
-        </#list>
+    <tr th:each="client: ${clientsList}">
+        <td th:text="${client.id}"></td>
+        <td th:text="${client.name}"></td>
+        <td th:text="${client.getAddress().getStreet()}"></td>
+        <p th:each="phone: ${client.numbers}">
+            <td th:text="${phone.number}"> </td>
+        </p>
+
     </tr>
-    </#list>
     </tbody>
 </table>
 </body>

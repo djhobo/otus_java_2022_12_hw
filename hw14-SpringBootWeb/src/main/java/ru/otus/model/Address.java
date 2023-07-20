@@ -1,33 +1,28 @@
 package ru.otus.model;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@Entity
 @Table(name = "address")
-public class Address implements Cloneable {
+public class Address{
     @Id
-    @SequenceGenerator(name = "address_gen", sequenceName = "address_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_gen")
-    @Column(name = "id")
-    private Long id;
+    @Column("client_id")
+    private final Long id;
 
-    @Column(name = "street")
-    private String street;
+    private final String street;
 
-    public Address(Long address_id, String street) {
-        this.id = address_id;
+    public Address(String street) {
+        this.id = null;
         this.street = street;
     }
 
-    @Override
-    protected Address clone() {
-        return new Address(this.id, this.street);
+    public Long getId() {
+        return id;
+    }
+
+    public String getStreet() {
+        return street;
     }
 
     @Override
